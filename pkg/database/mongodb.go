@@ -12,6 +12,14 @@ import (
 
 var client *mongo.Client // グローバル変数としてMongoDBクライアントを保持
 
+func CallDBAndcollection(client *mongo.Client) string {
+	// NULLチェック
+	if client != nil {
+		log.Fatalf("Database connect error] %v", client)
+	}
+	return "Hello,World"
+}
+
 func ConnectToMongoDB(uri string) *mongo.Client {
 
 	// すでにクライアントが作成されている場合、そのクライアントを返す
