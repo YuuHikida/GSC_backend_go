@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 
@@ -17,7 +18,13 @@ func CallDBAndcollection(client *mongo.Client) string {
 	if client == nil {
 		log.Fatalf("Database connect error : (%v)", client)
 	}
-	return "Hello,World"
+
+	db := client.Database("gitInfoContributes")
+	collection := db.Collection("user_info")
+
+	fmt.Println("%s", collection)
+	return "hellohelllo"
+
 }
 
 func ConnectToMongoDB(uri string) *mongo.Client {
