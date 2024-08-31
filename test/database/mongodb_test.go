@@ -5,7 +5,10 @@ import (
 	"testing"
 
 	"github.com/joho/godotenv"
+	"go.mongodb.org/mongo-driver/mongo"
 )
+
+var client *mongo.Client
 
 func TestMongoDB(t *testing.T) {
 	// 準備
