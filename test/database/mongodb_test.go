@@ -10,6 +10,7 @@ import (
 
 var client *mongo.Client
 
+// test
 func TestMongoDB(t *testing.T) {
 	// 準備
 	err := godotenv.Load()
