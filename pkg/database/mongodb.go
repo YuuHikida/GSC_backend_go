@@ -14,8 +14,8 @@ var client *mongo.Client // グローバル変数としてMongoDBクライアン
 
 func CallDBAndcollection(client *mongo.Client) string {
 	// NULLチェック
-	if client != nil {
-		log.Fatalf("Database connect error] %v", client)
+	if client == nil {
+		log.Fatalf("Database connect error : (%v)", client)
 	}
 	return "Hello,World"
 }
@@ -23,9 +23,9 @@ func CallDBAndcollection(client *mongo.Client) string {
 func ConnectToMongoDB(uri string) *mongo.Client {
 
 	// すでにクライアントが作成されている場合、そのクライアントを返す
-	if client != nil {
-		return client
-	}
+	// if client != nil {
+	// 	return client
+	// }
 
 	// MongoDB 接続オプション設定
 	clientOptions := options.Client().ApplyURI(uri)

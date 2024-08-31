@@ -23,6 +23,25 @@ func TestMongoDB(t *testing.T) {
 		t.Fatal("MONGODB_URI is not set in .env file")
 	}
 
+	t.Run("call DB and collection", func(t *testing.T) {
+		client := database.ConnectToMongoDB(uri)
+		got := database.CallDBAndcollection(client)
+		want := "test"
+
+		if got != want {
+			t.Errorf("got :(%s), want:(%s)", got, want)
+		}
+	})
+	t.Run("connect", func(t *testing.T) {
+		element := uri
+		got := database.ConnectToMongoDB(element)
+		want := client
+
+		if got != want {
+			t.Errorf("got :(%v), want:(%v)", got, want)
+		}
+	})
+
 	t.Run("returnURI", func(t *testing.T) {
 		got := database.GetURI()
 		want := uri
@@ -31,24 +50,4 @@ func TestMongoDB(t *testing.T) {
 			t.Errorf("got :(%s), want:(%s)", got, want)
 		}
 	})
-	t.Run("call DB and collection", func(t *testing.T) {
-		got := database.CallDBAndcollection(client)
-		want := "test"
-
-		if got != want {
-			t.Errorf("got :(%s), want:(%s)", got, want)
-		}
-	})
-	// t.Run("connect", func(t *testing.T) {
-
-	// 	var client *mongo.Client
-
-	// 	element := uri
-	// 	got := database.ConnectToMongoDB(element)
-	// 	want := client
-
-	// 	if got != want {
-	// 		t.Errorf("got :(%q), want:(%q)", got, want)
-	// 	}
-	// })
 }
