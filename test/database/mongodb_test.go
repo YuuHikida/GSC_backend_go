@@ -4,16 +4,16 @@ import (
 	"os"
 	"testing"
 
+	"github.com/YuuHikida/GSC_backend_go/pkg/database" // databaseパッケージのインポート
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 var client *mongo.Client
 
-// test3
 func TestMongoDB(t *testing.T) {
 	// 準備
-	err := godotenv.Load()
+	err := godotenv.Load("../../.env")
 	if err != nil {
 		t.Fatalf("Error loading .env file")
 	}
@@ -24,13 +24,12 @@ func TestMongoDB(t *testing.T) {
 	}
 
 	t.Run("connect", func(t *testing.T) {
-
 		element := "URL"
-		got := ConnectToMongoDB(element)
+		got := database.ConnectToMongoDB(element)
 		want := "HIKIDA"
 
 		if got != want {
-			t.Errorf("got :(%g), want:(%g)", got, want)
+			t.Errorf("got :(%q), want:(%q)", got, want)
 		}
 	})
 }
