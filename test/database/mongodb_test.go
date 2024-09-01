@@ -43,11 +43,17 @@ func TestMongoDB(t *testing.T) {
 	})
 
 	t.Run("returnURI", func(t *testing.T) {
-		got := database.GetURI()
+		got, error := database.GetURI()
 		want := uri
-
+		if error != nil {
+			t.Errorf("returnURL :ERORR")
+		}
 		if got != want {
 			t.Errorf("got :(%s), want:(%s)", got, want)
 		}
+	})
+
+	t.Run("disconnectFunc", func(t *testing.T) {
+
 	})
 }
