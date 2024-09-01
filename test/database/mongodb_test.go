@@ -46,7 +46,7 @@ func TestMongoDB(t *testing.T) {
 
 	t.Run("ConnectToMongoDB", func(t *testing.T) {
 		moji := uri
-		got, error := database.ConnectToMongoDB(moji, client)
+		got, error := database.ConnectToMongoDB(client, moji)
 		want := client
 		if error != nil {
 			t.Errorf("ConnectToMongoDB :ERORR")

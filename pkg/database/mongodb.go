@@ -28,7 +28,7 @@ import (
 
 */
 
-var client *mongo.Client // グローバル変数としてMongoDBクライアントを保持
+// var client *mongo.Client // グローバル変数としてMongoDBクライアントを保持
 
 // mongoDB Atlas 接続文字列取得
 func GetURI() (string, error) {
@@ -75,18 +75,15 @@ func ConnectToMongoDB(ctx context.Context, uri string) (*mongo.Client, error) {
 	return client, nil
 }
 
-func CallDBAndcollection(client *mongo.Client) string {
+// 指定されたクライアントを使用して、コレクションを取得する関数
+func GetCollection(client *mongo.Client, dbName, collectionName string) (*mongo.Collection, error) {
 	// NULLチェック
 	if client == nil {
-		log.Fatalf("Database connect error : (%v)", client)
+		return nil, fmt.Errorf("client is nil")
 	}
 
-	db := client.Database("gitInfoContributes")
-	collection := db.Collection("user_info")
-
-	fmt.Println("%s", collection)
-	return "hellohelllo"
-
+	collection := client.Database(dbName).Collection(collectionName)
+	return collection, nil
 }
 
 // クライアントの接続を閉じる関数
