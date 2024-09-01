@@ -13,10 +13,18 @@ import (
 
 /*
   --- MEMO --
-	context.Context の役割:
+	[context.Context の役割]:
 	・context.Context は、キャンセルやタイムアウトの制御、
 	リクエスト間の値の伝播、または異なる操作間での共有のために使用される
 
+	[コンテキスト（Context）とは？]
+	・コンテキストは、Go言語でキャンセル信号やデッドライン（タイムアウト）、
+		その他のリクエストに関連する情報を管理するための構造体です。
+			一般的に、複数のゴルーチン（並行処理のスレッド）での処理やリクエストのキャンセルを
+				一元的に管理するために使用されます。
+
+	・コンテキストを使うことで、リクエストのスコープ内で、
+		例えば、タイムアウトやキャンセルなどの状態を共有することができます。
 
 */
 
@@ -40,6 +48,33 @@ func GetURI() (string, error) {
 	return uri, nil
 }
 
+// MongoDBクライアントを取得する関数
+func ConnectToMongoDB(ctx context.Context, uri string) (*mongo.Client, error) {
+
+	// すでにクライアントが作成されている場合、そのクライアントを返す
+	// if client != nil {
+	// 	return client
+	// }
+
+	// MongoDB 接続オプション設定
+	clientOptions := options.Client().ApplyURI(uri)
+
+	// MongoDB クライアントの作成
+	// Connectにより作成されたインスタンスは破棄されない限り、繋がり続ける(破棄)
+	client, err := mongo.Connect(ctx, clientOptions)
+	if err != nil {
+		// log.Fatalf("Error creating MongoDB client: %w", err) // エラーが発生した場合、ログを出力してプログラムを終了
+		return nil, fmt.Errorf("error creating MongoDB client: %w", err)
+	}
+
+	// 接続確認
+	err = client.Ping(ctx, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error pinging MongoDB: %w", err)
+	}
+	return client, nil
+}
+
 func CallDBAndcollection(client *mongo.Client) string {
 	// NULLチェック
 	if client == nil {
@@ -52,31 +87,6 @@ func CallDBAndcollection(client *mongo.Client) string {
 	fmt.Println("%s", collection)
 	return "hellohelllo"
 
-}
-
-func ConnectToMongoDB(uri string) *mongo.Client {
-
-	// すでにクライアントが作成されている場合、そのクライアントを返す
-	// if client != nil {
-	// 	return client
-	// }
-
-	// MongoDB 接続オプション設定
-	clientOptions := options.Client().ApplyURI(uri)
-
-	// MongoDB クライアントの作成
-	// Connectにより作成されたインスタンスは破棄されない限り、繋がり続ける(破棄)
-	client, err := mongo.Connect(context.TODO(), clientOptions)
-	if err != nil {
-		log.Fatalf("Error creating MongoDB client: %v", err) // エラーが発生した場合、ログを出力してプログラムを終了
-	}
-
-	// 接続確認
-	err = client.Ping(context.TODO(), nil)
-	if err != nil {
-		log.Fatalf("Error pinging MongoDB: %v", err)
-	}
-	return client
 }
 
 // クライアントの接続を閉じる関数
