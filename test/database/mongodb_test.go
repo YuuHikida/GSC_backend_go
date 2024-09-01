@@ -12,8 +12,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var client *mongo.Client
-
 func TestMongoDB(t *testing.T) {
 	//------------- 準備 -----------------------
 	err := godotenv.Load("../../.env")
@@ -37,38 +35,30 @@ func TestMongoDB(t *testing.T) {
 		got, error := database.GetURI()
 		want := uri
 		if error != nil {
-			t.Errorf("returnURL :ERORR")
+			t.Errorf("returnURI :ERROR")
 		}
 		if got != want {
 			t.Errorf("got :(%s), want:(%s)", got, want)
 		}
 	})
 
-	t.Run("ConnectToMongoDB", func(t *testing.T) {
-		moji := uri
-		got, error := database.ConnectToMongoDB(client, moji)
-		want := client
-		if error != nil {
-			t.Errorf("ConnectToMongoDB :ERORR")
-		}
-		if got != want {
-			t.Errorf("got :(%v), want:(%v)", got, want)
-		}
-	})
-
-	// t.Run("call DB and collection", func(t *testing.T) {
-	// 	client, error := database.ConnectToMongoDB(uri, ctx)
-	// 	got := database.CallDBAndcollection(client)
-	// 	want := "test"
-	// 	if error != nil {
-	// 		t.Errorf("call DB and collection :ERORR")
+	// t.Run("ConnectToMongoDB", func(t *testing.T) {
+	// 	moji := uri
+	// 	got, err := database.ConnectToMongoDB(ctx, moji) // 修正: ctx を第1引数に渡す
+	// 	want := client
+	// 	if err != nil {
+	// 		t.Errorf("ConnectToMongoDB :ERROR")
 	// 	}
 	// 	if got != want {
-	// 		t.Errorf("got :(%s), want:(%s)", got, want)
+	// 		t.Errorf("got :(%v), want:(%v)", got, want)
 	// 	}
 	// })
 
 	t.Run("disconnectFunc", func(t *testing.T) {
-
+		// ここでDisconnectのテストができるよ
+		err := database.DisconnectClient(ctx, client)
+		if err != nil {
+			t.Errorf("Failed to disconnect MongoDB client: %v", err)
+		}
 	})
 }

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -29,6 +30,35 @@ import (
 */
 
 // var client *mongo.Client // グローバル変数としてMongoDBクライアントを保持
+
+func Initialize() (*mongo.Client, context.Context, error) {
+	// コンテキスト作成
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	// 接続文字列取得
+	uri, err := GetURI()
+	if err != nil {
+		log.Fatalf("Failed to get URI: %v", err)
+	}
+
+	// MongoDBクライアントを接続
+	client, err := ConnectToMongoDB(ctx, uri)
+	if err != nil {
+		log.Fatalf("Failed to connect to MongoDB: %v", err)
+	}
+	defer func() {
+		DisconnectClient(ctx, client)
+	}()
+
+	return client, ctx, err
+	// コレクションを取得
+	// collection, err := GetCollection(client, "gitInfoContributes", "user_info")
+	// if err != nil {
+	// 	log.Fatalf("Failed to get collection: %v", err)
+	// }
+
+}
 
 // mongoDB Atlas 接続文字列取得
 func GetURI() (string, error) {
