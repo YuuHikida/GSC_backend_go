@@ -31,10 +31,9 @@ import (
 
 // var client *mongo.Client // グローバル変数としてMongoDBクライアントを保持
 
-func Initialize() (*mongo.Client, context.Context, error) {
+func Initialize() (*mongo.Client, context.Context, context.CancelFunc, error) {
 	// コンテキスト作成
-	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
-	defer cancel()
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 
 	// 接続文字列取得
 	uri, err := GetURI()
@@ -47,11 +46,8 @@ func Initialize() (*mongo.Client, context.Context, error) {
 	if err != nil {
 		log.Fatalf("Failed to connect to MongoDB: %v", err)
 	}
-	defer func() {
-		DisconnectClient(ctx, client)
-	}()
 
-	return client, ctx, err
+	return client, ctx, cancel, err
 	// コレクションを取得
 	// collection, err := GetCollection(client, "gitInfoContributes", "user_info")
 	// if err != nil {
