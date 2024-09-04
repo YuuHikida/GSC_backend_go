@@ -1,15 +1,5 @@
 package main
 
-// import (
-// 	"context"
-// 	"fmt"
-// 	"log"
-// 	"time"
-
-// 	"github.com/YuuHikida/GSC_backend_go/pkg/database" // databaseパッケージのインポート
-// 	"go.mongodb.org/mongo-driver/bson"
-// )
-
 /*
 	log: ロギングを行うための標準ライブラリ。エラーが発生した際にログ出力できるように使用する。
 	net/http: HTTPサーバーとクライアント機能を提供する標準ライブラリ。サーバーを立てたり、HTTPリクエストを処理したりするのに必要。
@@ -17,24 +7,36 @@ package main
 	yourapp/pkg/config: 設定を管理するパッケージ。設定ファイルや環境変数から設定を読み込む関数が含まれる。
 	yourapp/pkg/database: データベースとの接続を管理するパッケージ。MongoDBとの接続を確立するためのロジックが含まれる。
 */
-
 import (
-	"fmt"
+	"log"
 	"net/http"
-	// APIハンドラーをインポート
-	// "github.com/YuuHikida/GSC_backend_go/pkg/config"
+
+	"github.com/YuuHikida/GSC_backend_go/pkg/api"
+	"github.com/YuuHikida/GSC_backend_go/pkg/database"
 )
 
 // 書き残し:2024-09-01 net/httpの書き方とイベントハンドラーについて学ぶたびに出るのでいったん作業終了
 // 現状8080でルートアクセスしてもDBの値取得できず
 func main() {
-	http.HandleFunc("/", handler)     // リクエストを受け取るたびに `handler` 関数が呼ばれる
-	http.ListenAndServe(":8080", nil) // ポート8080でサーバーを起動
+	client, ctx, err := database.Initialize()
+	if err != nil {
+		log.Fatal("Database initialization failed: ", err)
+	}
+	defer func() {
+		if err = client.Disconnect(ctx); err != nil {
+			log.Fatal("Error disconnecting from the database:", err)
+		}
+	}()
+
+	//ハンドラーにクライアントとコンテキストを渡す
+	api.SetDB(client, ctx)
+	http.HandleFunc("/", api.HandleRoot) // リクエストを受け取るたびに `handler` 関数が呼ばれる
+	http.ListenAndServe(":8080", nil)    // ポート8080でサーバーを起動
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, %s!", r.URL.Path[1:])
-}
+// func handler(w http.ResponseWriter, r *http.Request) {
+// 	fmt.Fprintf(w, "Hello, %s!", r.URL.Path[1:])
+// }
 
 // func main() {
 // 	// 設定とデータベースの初期化
