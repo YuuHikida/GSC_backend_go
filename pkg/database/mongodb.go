@@ -33,7 +33,7 @@ import (
 
 func Initialize() (*mongo.Client, context.Context, context.CancelFunc, error) {
 	// コンテキスト作成
-	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 
 	// 接続文字列取得
 	uri, err := GetURI()

@@ -40,7 +40,8 @@ func main() {
 	api.SetDB(client, ctx)
 
 	// ハンドラー設定
-	http.HandleFunc("/", api.HandleRoot) // リクエストを受け取るたびに `handler` 関数が呼ばれる
+	http.HandleFunc("/") // リクエストを受け取るたびに `handler` 関数が呼ばれる
+	http.HandleFunc("/all", api.AllSelect)
 
 	// サーバー起動
 	log.Println("Starting server on :8080")
