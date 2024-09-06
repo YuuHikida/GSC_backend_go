@@ -54,7 +54,7 @@ func FindOne(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
 	}
-
+	//test
 	log.Println("Found document:", result)
 
 	if gitName, ok := result["git_name"].(string); ok {
