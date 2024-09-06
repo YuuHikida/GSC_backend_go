@@ -32,28 +32,19 @@ import (
 // var client *mongo.Client // グローバル変数としてMongoDBクライアントを保持
 
 func Initialize() (*mongo.Client, context.Context, context.CancelFunc, error) {
-	// コンテキスト作成
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 
-	// 接続文字列取得
 	uri, err := GetURI()
 	if err != nil {
 		log.Fatalf("Failed to get URI: %v", err)
 	}
 
-	// MongoDBクライアントを接続
 	client, err := ConnectToMongoDB(ctx, uri)
 	if err != nil {
 		log.Fatalf("Failed to connect to MongoDB: %v", err)
 	}
 
 	return client, ctx, cancel, err
-	// コレクションを取得
-	// collection, err := GetCollection(client, "gitInfoContributes", "user_info")
-	// if err != nil {
-	// 	log.Fatalf("Failed to get collection: %v", err)
-	// }
-
 }
 
 // mongoDB Atlas 接続文字列取得
@@ -101,21 +92,21 @@ func ConnectToMongoDB(ctx context.Context, uri string) (*mongo.Client, error) {
 	return client, nil
 }
 
-// 指定されたクライアントを使用して、コレクションを取得する関数
-func GetCollection(client *mongo.Client, dbName, collectionName string) (*mongo.Collection, error) {
-	// NULLチェック
-	if client == nil {
-		return nil, fmt.Errorf("client is nil")
-	}
+// // 指定されたクライアントを使用して、コレクションを取得する関数
+// func GetCollection(client *mongo.Client, dbName, collectionName string) (*mongo.Collection, error) {
+// 	// NULLチェック
+// 	if client == nil {
+// 		return nil, fmt.Errorf("client is nil")
+// 	}
 
-	collection := client.Database(dbName).Collection(collectionName)
-	return collection, nil
-}
+// 	collection := client.Database(dbName).Collection(collectionName)
+// 	return collection, nil
+// }
 
-// クライアントの接続を閉じる関数
-func DisconnectClient(ctx context.Context, client *mongo.Client) error {
-	if err := client.Disconnect(ctx); err != nil {
-		return fmt.Errorf("error disconnecting from MongoDB: %w", err)
-	}
-	return nil
-}
+// // クライアントの接続を閉じる関数
+// func DisconnectClient(ctx context.Context, client *mongo.Client) error {
+// 	if err := client.Disconnect(ctx); err != nil {
+// 		return fmt.Errorf("error disconnecting from MongoDB: %w", err)
+// 	}
+// 	return nil
+// }
