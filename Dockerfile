@@ -1,17 +1,19 @@
-# ステージ1: ビルド用
+# Go 1.23のAlpineイメージを使用してビルドステージを作成
 FROM golang:1.23-alpine AS build
 
-# ワーキングディレクトリを設定
+# Dockerコンテナ内の作業ディレクトリを /app に設定
 WORKDIR /app
 
-# モジュールファイルをコピー
+# ローカルの go.mod と go.sum ファイルをコンテナ内の /app にコピー
 COPY go.mod go.sum ./
+
+# コンテナ内で go mod tidy を実行し、依存関係を整理・インストール     
 RUN go mod tidy
 
-# ソースコードを全てコピー
+# ローカルのソースコード全てをコンテナ内の /app にコピー
 COPY . .
 
-# Goアプリケーションをビルド
+# コンテナ内の /app/cmd/app ディレクトリでビルドし、main という実行ファイルを作成
 RUN go build -o main ./cmd/app
 
 # ステージ2: 実行用
