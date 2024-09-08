@@ -50,7 +50,9 @@ func Initialize() (*mongo.Client, context.Context, context.CancelFunc, error) {
 // mongoDB Atlas 接続文字列取得
 func GetURI() (string, error) {
 
-	err := godotenv.Load("../../.env")
+	// Docker使わずにローカルで起動するなら以下
+	// err := godotenv.Load("../../.env")
+	err := godotenv.Load("/app/.env")
 	if err != nil {
 		// log.Fatalfはエラーメッセをフォーマットして出力し、プログラムを終了する
 		log.Fatalf("Error loading .env file :(%v)", err)
