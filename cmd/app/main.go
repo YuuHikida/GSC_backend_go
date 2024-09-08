@@ -21,7 +21,8 @@ import (
 // 現状8080でルートアクセスしてもDBの値取得できず
 func main() {
 	fmt.Println("-- Start Program --")
-	//　初期設定
+
+	//　初期設定(DBの初期化)
 	client, ctx, cancel, err := database.Initialize()
 	if err != nil {
 		log.Fatal("Database initialization failed: ", err)
