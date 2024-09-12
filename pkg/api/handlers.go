@@ -20,7 +20,7 @@ bson.M... 構造体の型: map[string]interface{}（Goのマップ構造に似�
 // 	ctx        context.Context
 // 	collection *mongo.Collection
 // )
-//tet
+//tett
 
 // 一件のドキュメントを取得してJSONで返す
 func FindOne(w http.ResponseWriter, r *http.Request) {
