@@ -165,3 +165,5 @@
  docker run -d -p 8080:8080 my-go-app
  3.コンテナの確認
  docker ps
+4.確認
+curl http://localhost:8080
