@@ -159,7 +159,9 @@
 
 
 # docker コマンド
- 1.
+ 1.Dockerイメージのビルド
  docker build -t my-go-app .
- 2.
+ 2.コンテナ実行
  docker run -d -p 8080:8080 my-go-app
+ 3.コンテナの確認
+ docker ps
