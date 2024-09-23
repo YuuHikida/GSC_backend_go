@@ -16,6 +16,7 @@ import (
 	"github.com/YuuHikida/GSC_backend_go/pkg/database"
 	"github.com/YuuHikida/GSC_backend_go/services"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -48,9 +49,20 @@ func main() {
 	router.HandleFunc("/", api.FindOne).Methods("GET") // HTTPメソッドを指定
 	router.HandleFunc("/all", api.AllSelect).Methods("GET")
 
+	// CORS設定
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3000"}, // Reactアプリのオリジンを許可
+		AllowCredentials: true,
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+		AllowedHeaders:   []string{"Authorization", "Content-Type"},
+	})
+
+	// CORSミドルウェアを適用
+	handler := c.Handler(router)
+
 	// サーバー起動
 	log.Println("Starting server on :8080")
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", handler)
 
 	fmt.Println("-- END Program --")
 }
