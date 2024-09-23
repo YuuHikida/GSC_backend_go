@@ -15,12 +15,14 @@ import (
 	"github.com/YuuHikida/GSC_backend_go/pkg/api"
 	"github.com/YuuHikida/GSC_backend_go/pkg/database"
 	"github.com/YuuHikida/GSC_backend_go/services"
+	"github.com/gorilla/mux"
 )
 
-// 書き残し:2024-09-01 net/httpの書き方とイベントハンドラーについて学ぶたびに出るのでいったん作業終了
-// 現状8080でルートアクセスしてもDBの値取得できず
 func main() {
 	fmt.Println("-- Start Program --")
+
+	// ルーターを作成
+	router := mux.NewRouter()
 
 	//　初期設定(DBの初期化)
 	client, ctx, cancel, err := database.Initialize()
@@ -42,8 +44,9 @@ func main() {
 	services.Initialize(client)
 
 	// ハンドラー設定
-	http.HandleFunc("/", api.FindOne)
-	http.HandleFunc("/all", api.AllSelect)
+	// http.HnadleFuncよりrouterのほうがHTTPメソッドを指定可能
+	router.HandleFunc("/", api.FindOne).Methods("GET") // HTTPメソッドを指定
+	router.HandleFunc("/all", api.AllSelect).Methods("GET")
 
 	// サーバー起動
 	log.Println("Starting server on :8080")
