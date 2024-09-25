@@ -18,8 +18,10 @@ func Initialize(client *mongo.Client) {
 
 // FindOneDocument は、MongoDBから1件のドキュメントを取得して返す
 func FindOneDocument(ctx context.Context, gitName string) (bson.M, error) {
+	// bson.Mはドキュメントのキーと値をペアで保存するデータ型
+	// キーはStinrg,値はinterface{}
 	var result bson.M
-	err := collection.FindOne(ctx, bson.M{"git_name": gitName}).Decode(&result)
+	err := collection.FindOne(ctx, bson.M{"git_name": gitName}).Decode(&result) //.Decode(格納)
 	if err != nil {
 		log.Printf("Error finding document: %v", err)
 		return nil, err
