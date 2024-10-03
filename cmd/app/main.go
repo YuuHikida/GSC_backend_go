@@ -12,10 +12,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/YuuHikida/GSC_backend_go/pkg/api"
 	"github.com/YuuHikida/GSC_backend_go/pkg/database"
+	api "github.com/YuuHikida/GSC_backend_go/pkg/handlers"
 	"github.com/YuuHikida/GSC_backend_go/services"
-	"github.com/gorilla/mux"
+
 	"github.com/rs/cors"
 )
 
@@ -23,7 +23,7 @@ func main() {
 	fmt.Println("-- Start Program --")
 
 	// ルーターを作成
-	router := mux.NewRouter()
+	router := handlers.SetRoutes()
 
 	//　初期設定(DBの初期化)
 	client, ctx, cancel, err := database.Initialize()
