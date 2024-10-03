@@ -13,7 +13,7 @@ import (
 	"net/http"
 
 	"github.com/YuuHikida/GSC_backend_go/pkg/database"
-	api "github.com/YuuHikida/GSC_backend_go/pkg/handlers"
+	"github.com/YuuHikida/GSC_backend_go/pkg/handlers"
 	"github.com/YuuHikida/GSC_backend_go/services"
 
 	"github.com/rs/cors"
@@ -43,11 +43,6 @@ func main() {
 
 	// サービス層の初期化
 	services.Initialize(client)
-
-	// ハンドラー設定
-	// http.HnadleFuncよりrouterのほうがHTTPメソッドを指定可能
-	router.HandleFunc("/", api.FindOne).Methods("GET") // HTTPメソッドを指定
-	router.HandleFunc("/all", api.AllSelect).Methods("GET")
 
 	// CORS設定
 	c := cors.New(cors.Options{
