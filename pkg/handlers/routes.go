@@ -1,18 +1,29 @@
 package handlers
 
 import (
-	"github.com/YuuHikida/GSC_backend_go/pkg/handlers"
+	"net/http"
+
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 // ルーティング設定関数
-func SetRoutes() *mux.Router {
-	router = mux.NewRouter()
+func SetRoutes() http.Handler {
+	router := mux.NewRouter()
 
 	// ハンドラー設定
 	// http.HnadleFuncよりrouterのほうがHTTPメソッドを指定可能
-	router.HandleFunc("/", handlers.FindOne).Methods("GET") // HTTPメソッドを指定
-	router.HandleFunc("/all", handlers.AllSelect).Methods("GET")
+	router.HandleFunc("/", FindOne).Methods("GET") // HTTPメソッドを指定
+	router.HandleFunc("/all", AllSelect).Methods("GET")
 
-	return router
+	// CORS設定
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3000"}, // Reactアプリのオリジンを許可
+		AllowCredentials: true,
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+		AllowedHeaders:   []string{"Authorization", "Content-Type"},
+	})
+
+	// CORSミドルウェアを適用
+	return c.Handler(router)
 }

@@ -15,15 +15,13 @@ import (
 	"github.com/YuuHikida/GSC_backend_go/pkg/database"
 	"github.com/YuuHikida/GSC_backend_go/pkg/handlers"
 	"github.com/YuuHikida/GSC_backend_go/services"
-
-	"github.com/rs/cors"
 )
 
 func main() {
 	fmt.Println("-- Start Program --")
 
 	// ルーターを作成
-	router := handlers.SetRoutes()
+	handler := handlers.SetRoutes()
 
 	//　初期設定(DBの初期化)
 	client, ctx, cancel, err := database.Initialize()
@@ -43,17 +41,6 @@ func main() {
 
 	// サービス層の初期化
 	services.Initialize(client)
-
-	// CORS設定
-	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:3000"}, // Reactアプリのオリジンを許可
-		AllowCredentials: true,
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
-		AllowedHeaders:   []string{"Authorization", "Content-Type"},
-	})
-
-	// CORSミドルウェアを適用
-	handler := c.Handler(router)
 
 	// サーバー起動
 	log.Println("Starting server on :8080")
