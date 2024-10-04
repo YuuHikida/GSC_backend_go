@@ -15,6 +15,7 @@ func SetRoutes() http.Handler {
 	// http.HnadleFuncよりrouterのほうがHTTPメソッドを指定可能
 	router.HandleFunc("/", FindOne).Methods("GET") // HTTPメソッドを指定
 	router.HandleFunc("/all", AllSelect).Methods("GET")
+	router.HandleFunc("/register", Register).Methods("POST") // user情報登録用
 
 	// CORS設定 x
 	c := cors.New(cors.Options{
