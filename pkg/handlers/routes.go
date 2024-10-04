@@ -16,7 +16,7 @@ func SetRoutes() http.Handler {
 	router.HandleFunc("/", FindOne).Methods("GET") // HTTPメソッドを指定
 	router.HandleFunc("/all", AllSelect).Methods("GET")
 
-	// CORS設定
+	// CORS設定 x
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:3000"}, // Reactアプリのオリジンを許可
 		AllowCredentials: true,
