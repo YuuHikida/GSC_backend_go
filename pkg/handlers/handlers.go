@@ -9,18 +9,6 @@ import (
 	"github.com/YuuHikida/GSC_backend_go/models"
 )
 
-/*
-	bson.Dとbson.M違いはキーと値ぺの順番を重要
-
-bson.D... 構造体の型: []bson.E（bson.Eは、キーと値のペアを表す構造体）
-bson.M... 構造体の型: map[string]interface{}（Goのマップ構造に似たもので、キーと値のペア）
-*/
-
-// var (
-// 	client     *mongo.Client
-// 	ctx        context.Context
-// 	collection *mongo.Collection
-// )
 
 // 一件のドキュメントを取得してJSONで返す
 func FindOne(w http.ResponseWriter, r *http.Request) {
@@ -55,12 +43,16 @@ func RegisterUserInfo(w http.ResponseWriter, r *http.Request) {
 	/*-------------------
 	 バリデーションチェック
 	---------------------*/
+	// リクエストボディをGoの構造体へデコード
 	var body models.user_info
 	err := json.NewDecoder(r.Body).Decode(&body)
 	if err !=nil{
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
         return
 	}
+	/*上記短縮系
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil 
+	 {...}*/
 
 	nRet := 
 
