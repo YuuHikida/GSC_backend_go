@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/YuuHikida/GSC_backend_go/services"
 	"github.com/YuuHikida/GSC_backend_go/models"
+	"github.com/YuuHikida/GSC_backend_go/pkg/validation"
+	"github.com/YuuHikida/GSC_backend_go/services"
 )
-
 
 // 一件のドキュメントを取得してJSONで返す
 func FindOne(w http.ResponseWriter, r *http.Request) {
@@ -44,16 +44,23 @@ func RegisterUserInfo(w http.ResponseWriter, r *http.Request) {
 	 バリデーションチェック
 	---------------------*/
 	// リクエストボディをGoの構造体へデコード
-	var body models.user_info
+	var body models.User_info
 	err := json.NewDecoder(r.Body).Decode(&body)
-	if err !=nil{
+	if err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
-        return
+		return
 	}
 	/*上記短縮系
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil 
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil
 	 {...}*/
 
-	nRet := 
+	nRet, returnMsg := validation.InputUserInfoValueCheckMain()
 
+	// 戻り値判定 nRet(異常:->0,正常:->1)
+	if nRet == 1 {
+		http.Error(w, "入力値エラー:"+returnMsg, http.StatusBadRequest)
+		return
+	} else {
+		return
+	}
 }
