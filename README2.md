@@ -166,6 +166,20 @@
 4.確認
 curl http://localhost:8080
 
+# bson.DとMの違い
+/*
+	bson.Dとbson.M違いはキーと値ぺの順番を重要
+
+bson.D... 構造体の型: []bson.E（bson.Eは、キーと値のペアを表す構造体）
+bson.M... 構造体の型: map[string]interface{}（Goのマップ構造に似たもので、キーと値のペア）
+*/
+
+// var (
+// 	client     *mongo.Client
+// 	ctx        context.Context
+// 	collection *mongo.Collection
+// )
+
 # http.ResponseWriter
 http.ResponseWriterは、サーバー側でクライアントに対してレスポンスを送信するためのインターフェースです。このインターフェースを使って、サーバーからクライアントにデータ（HTMLやJSONなど）を返します。
 

@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/YuuHikida/GSC_backend_go/services"
+	"github.com/YuuHikida/GSC_backend_go/models"
 )
 
 /*
@@ -51,6 +52,16 @@ func AllSelect(w http.ResponseWriter, r *http.Request) {
 
 // user情報を登録する
 func RegisterUserInfo(w http.ResponseWriter, r *http.Request) {
-	// バリデーションチェック
+	/*-------------------
+	 バリデーションチェック
+	---------------------*/
+	var body models.user_info
+	err := json.NewDecoder(r.Body).Decode(&body)
+	if err !=nil{
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+        return
+	}
+
+	nRet := 
 
 }
