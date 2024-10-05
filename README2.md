@@ -165,3 +165,18 @@
  docker ps
 4.確認
 curl http://localhost:8080
+
+# http.ResponseWriter
+http.ResponseWriterは、サーバー側でクライアントに対してレスポンスを送信するためのインターフェースです。このインターフェースを使って、サーバーからクライアントにデータ（HTMLやJSONなど）を返します。
+
+使い方例
+Write([]byte)メソッドを使って、レスポンスの本文をクライアントに送信します。
+WriteHeader(statusCode int)メソッドを使って、HTTPステータスコード（例：200, 404, 500など）を指定します。
+
+# http.Request
+http.Requestは、クライアントからのリクエストに関する情報を保持する構造体です。クライアントが送ったデータ（URL、ヘッダー、ボディ、クエリパラメータなど）が格納されています。
+
+使い方例
+r.URLを使ってリクエストされたURLを取得できます。
+r.Methodを使って、HTTPメソッド（GET, POSTなど）を確認できます。
+r.Bodyを使ってリクエストボディを読み取ることができます。
