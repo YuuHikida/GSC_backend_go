@@ -51,5 +51,6 @@ func AllSelect(w http.ResponseWriter, r *http.Request) {
 
 // user情報を登録する
 func RegisterUserInfo(w http.ResponseWriter, r *http.Request) {
+	// バリデーションチェック
 
 }

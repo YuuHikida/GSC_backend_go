@@ -172,6 +172,12 @@ http.ResponseWriterは、サーバー側でクライアントに対してレス�
 使い方例
 Write([]byte)メソッドを使って、レスポンスの本文をクライアントに送信します。
 WriteHeader(statusCode int)メソッドを使って、HTTPステータスコード（例：200, 404, 500など）を指定します。
+例：
+func handler(w http.ResponseWriter, r *http.Request) {
+    w.WriteHeader(http.StatusOK) // 200ステータスを返す
+    w.Write([]byte("Hello, World!")) // レスポンスの本文を返す
+}
+
 
 # http.Request
 http.Requestは、クライアントからのリクエストに関する情報を保持する構造体です。クライアントが送ったデータ（URL、ヘッダー、ボディ、クエリパラメータなど）が格納されています。
@@ -180,3 +186,12 @@ http.Requestは、クライアントからのリクエストに関する情報�
 r.URLを使ってリクエストされたURLを取得できます。
 r.Methodを使って、HTTPメソッド（GET, POSTなど）を確認できます。
 r.Bodyを使ってリクエストボディを読み取ることができます。
+例:
+func handler(w http.ResponseWriter, r *http.Request) {
+    // リクエストのHTTPメソッドを確認
+    if r.Method == http.MethodGet {
+        w.Write([]byte("GET request received"))
+    } else if r.Method == http.MethodPost {
+        w.Write([]byte("POST request received"))
+    }
+}
