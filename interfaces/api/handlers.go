@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	"net/http"
 
@@ -54,11 +55,17 @@ func (h *UserHandler) RegisterUserInfo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.userService.RegisterUser(body)
-	if err != nil {
-		http.Error(w, "Validation or Database error", http.StatusInternalServerError)
-		return
-	}
-
+	// バリデーションチェック及び登録
+	//戻り値は成功or失敗値とメッセ
+	nRet, returnMsg := h.userService.RegisterUser(body)
+	/*
+		if err != nil {
+			http.Error(w, "Validation or Database error", http.StatusInternalServerError)
+			return
+		}
+	*/
+	// 一旦console.log出力
+	//いずれはメッセージを登録画面に返す
+	fmt.Printf("nRet:(%d),retunrMSG:(%s)", nRet, returnMsg)
 	w.WriteHeader(http.StatusCreated)
 }

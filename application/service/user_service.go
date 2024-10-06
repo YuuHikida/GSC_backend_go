@@ -7,7 +7,6 @@ package service
 */
 import (
 	"context"
-	"errors"
 
 	"github.com/YuuHikida/GSC_backend_go/domain/model"
 	"github.com/YuuHikida/GSC_backend_go/domain/repository"
@@ -23,19 +22,18 @@ func NewUserService() UserService {
 	return UserService{userRepository: persistence.NewMongoUserRepository()}
 }
 
-func (s *UserService) RegisterUser(userInfo model.UserInfo) error {
-	if err := s.validateUser(userInfo); err != nil {
-		return err
+func (s *UserService) RegisterUser(userInfo model.UserInfo) (int, string) {
+	// バリデーションチェック
+	nRet, returnMsg := s.InputUserInfoValueCheckMain(userInfo)
+	if nRet == 0 {
+		return 0, returnMsg
 	}
 
-	return s.userRepository.Save(&userInfo)
-}
-
-func (s *UserService) validateUser(userInfo model.UserInfo) error {
-	if userInfo.GitName == "" || userInfo.Mail == "" {
-		return errors.New("invalid user info")
+	err := s.userRepository.Save(&userInfo)
+	if err != nil {
+		return 0, "DB登録失敗"
 	}
-	return nil
+	return 1, "登録成功"
 }
 
 /*
