@@ -54,7 +54,7 @@ func RegisterUserInfo(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil
 	 {...}*/
 
-	nRet, returnMsg := validation.InputUserInfoValueCheckMain()
+	nRet, returnMsg := validation.InputUserInfoValueCheckMain(&body)
 
 	// 戻り値判定 nRet(異常:->0,正常:->1)
 	if nRet == 0 {
