@@ -1,4 +1,4 @@
-package models
+package model
 
 /*
 	前提知識

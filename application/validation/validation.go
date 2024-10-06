@@ -35,7 +35,7 @@ func InputUserInfoValueCheckMain(stUserInfo models.User_info) (int, string) {
 func check(gitName string) (int, string) {
 
 	// http.Getを使用してAccount文字列があるか確認
-	exists, err := service.CheackGitHubAccout(gitName)
+	exists, err := service.CheckGitHubAccount(gitName)
 	if err != nil {
 		return 0, "http.Get取得エラー"
 	}

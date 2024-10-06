@@ -8,7 +8,7 @@ import (
 /*
 概要  : GitHubのアカウントID文字列が存在するかの確認
 */
-func CheackGitHubAccout(userName string) (bool, error) {
+func CheckGitHubAccount(userName string) (bool, error) {
 	url := fmt.Sprintf("https://github.com/users/%s/contributions", userName)
 	resp, err := http.Get(url)
 	if err != nil {
