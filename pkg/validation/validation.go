@@ -39,7 +39,7 @@ func check(gitName string) (int, string) {
 	if err != nil {
 		return 0, "http.Get取得エラー"
 	}
-	if exists == false {
+	if !exists { //←false
 		return 0, "このGitIDは存在しません"
 	}
 
