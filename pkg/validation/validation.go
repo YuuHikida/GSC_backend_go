@@ -6,15 +6,31 @@ package validation
         　　returnMsg 成功時、及び失敗時のメッセージ
 */
 func InputUserInfoValueCheckMain() (int, string) {
-	// 戻り値初期化
-	var (
-		nRet      int    = 0
-		returnMsg string = ""
-	)
+	// GitNameのチェック
+	if nRet, returnMsg := checkGitName(); nRet == 0 {
+		return nRet, returnMsg
+	}
+
+	// Mailのチェック
+	if nRet, returnMsg := checkMail(); nRet == 0 {
+		return nRet, returnMsg
+	}
+
+	// 時間のチェック
+	if nRet, returnMsg := checkTime(); nRet == 0 {
+		return nRet, returnMsg
+	}
+
+	return 1, "全ての入力が正常"
+}
+
+func checkGitName() (int, string) {
 
 	return nRet, returnMsg
 }
+func checkMail() (int, string) {
 
-func checkGitName()
-func checkMail()
-func checkTime()
+}
+func checkTime() (int, string) {
+
+}
