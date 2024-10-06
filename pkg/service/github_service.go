@@ -1,8 +1,22 @@
 package service
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+)
 
-func CheackGitHubAccout(userName string) {
+/*
+概要  : GitHubのアカウントID文字列が存在するかの確認
+*/
+func CheackGitHubAccout(userName string) (bool, error) {
 	url := fmt.Sprintf("https://github.com/users/%s/contributions", userName)
+	resp, err := http.Get(url)
+	if err != nil {
+		return false, err
+	}
+	defer resp.Body.Close()
+
+	// ステータスコードが200だった場合は成功
+	return resp.StatusCode == http.StatusOK, nil
 
 }
