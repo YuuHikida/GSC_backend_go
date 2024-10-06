@@ -1,3 +1,7 @@
 package repository
 
-// 概要:MongoDBに関わるリポジトリインターフェースなど
+import "github.com/YuuHikida/GSC_backend_go/domain/model"
+
+type UserRepository interface {
+	Save(user model.User_info) error
+}

@@ -1,16 +1,22 @@
-package validation
+package service
 
+// user情報を登録するユースケース
 import (
 	"github.com/YuuHikida/GSC_backend_go/domain/model"
-	"github.com/YuuHikida/GSC_backend_go/pkg/service"
+	"github.com/YuuHikida/GSC_backend_go/domain/repository"
+	"github.com/YuuHikida/GSC_backend_go/infrastructure/external"
 )
+
+type UserService struct {
+	userRepository repository.UserRepository
+}
 
 /*
 		概要  : ユーザー登録情報のバリデーションチェック関数
 		戻り値: nRet 0 = 異常, 1 = 正常
 	        　　returnMsg 成功時、及び失敗時のメッセージ
 */
-func InputUserInfoValueCheckMain(stUserInfo model.User_info) (int, string) {
+func (s *UserService) InputUserInfoValueCheckMain(stUserInfo model.User_info) (int, string) {
 
 	// のチェック
 	if nRet, returnMsg := check(stUserInfo.GitName); nRet == 0 {
@@ -35,7 +41,7 @@ func InputUserInfoValueCheckMain(stUserInfo model.User_info) (int, string) {
 func check(gitName string) (int, string) {
 
 	// http.Getを使用してAccount文字列があるか確認
-	exists, err := service.CheckGitHubAccount(gitName)
+	exists, err := external.CheckGitHubAccount(gitName)
 	if err != nil {
 		return 0, "http.Get取得エラー"
 	}

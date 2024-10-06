@@ -155,3 +155,32 @@ func (s *GithubService) FetchAndSaveUserData(userID string) error {
    - ドメイン層を利用してアクションを実行するが、ユースケースごとの操作を処理する。
 
 このように、**ドメイン層**はアプリケーション全体に共通する「ビジネスルール」を定義する場所であり、**アプリケーション層**は具体的な「アプリケーションの操作フロー」を管理する場所と覚えると良いですね！
+
+
+=====================
+
+app/service に書くべきものは、アプリケーションのユースケースやビジネスの流れを扱うロジックです。具体的には、アプリケーション層は、ドメイン層やインフラ層の機能を統合して、ユーザーのリクエストや特定の操作に対して処理を行う部分です。簡単に言うと、アプリケーション全体の「操作の流れ」を管理する層です。
+
+
+=================
+
+
+├─cmd
+│   └─app
+│       └─main.go                     # アプリケーションのエントリーポイント
+├─interfaces
+│   └─api
+│       └─user_handler.go              # POSTリクエストを受け取るハンドラー
+├─application
+│   └─service
+│       └─user_service.go              # JSONを処理してデータを保存するビジネスロジック
+├─domain
+│   ├─model
+│   │   └─user.go                     # ユーザーのエンティティやバリューオブジェクト
+│   └─repository
+│       └─user_repository.go          # MongoDBのデータ取得・保存処理のインターフェース
+├─infrastructure
+│   └─persistence
+│       └─mongodb_user_repository.go  # MongoDBにデータを保存する実装
+└─test
+    └─user_handler_test.go            # テストファイル

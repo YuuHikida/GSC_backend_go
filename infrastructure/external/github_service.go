@@ -1,5 +1,6 @@
-package service
+package external
 
+// 概要:# ビジネスロジックをサービスとして定義
 import (
 	"fmt"
 	"net/http"

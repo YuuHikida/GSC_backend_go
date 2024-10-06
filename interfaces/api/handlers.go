@@ -1,14 +1,17 @@
-package handlers
+package api
 
 import (
 	"context"
 	"encoding/json"
 	"net/http"
 
-	"github.com/YuuHikida/GSC_backend_go/models"
-	"github.com/YuuHikida/GSC_backend_go/pkg/validation"
-	"github.com/YuuHikida/GSC_backend_go/services"
+	"github.com/YuuHikida/GSC_backend_go/application/service"
+	"github.com/YuuHikida/GSC_backend_go/domain/model"
 )
+
+type UserHandler struct {
+	userServive service.UserService
+}
 
 // 一件のドキュメントを取得してJSONで返す
 func FindOne(w http.ResponseWriter, r *http.Request) {
@@ -39,23 +42,18 @@ func AllSelect(w http.ResponseWriter, r *http.Request) {
 }
 
 // user情報を登録する
-func RegisterUserInfo(w http.ResponseWriter, r *http.Request) {
-	/*-------------------
-	 バリデーションチェック
-	---------------------*/
+func (h *UserHandler) RegisterUserInfo(w http.ResponseWriter, r *http.Request) {
+
+	var body model.User_info
 	// リクエストボディをGoの構造体へデコード
-	var body models.User_info
 	err := json.NewDecoder(r.Body).Decode(&body)
 	if err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	/*上記短縮系
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil
-	 {...}*/
 
-	nRet, returnMsg := validation.InputUserInfoValueCheckMain(body)
-
+	/* --- ユーザー登録ロジック呼び出し ---*/
+	nRet, returnMsg := h.userServive.InputUserInfoValueCheckMain(body)
 	// 戻り値判定 nRet(異常:->0,正常:->1)
 	if nRet == 0 {
 		http.Error(w, "入力値エラー:"+returnMsg, http.StatusBadRequest)
