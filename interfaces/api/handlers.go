@@ -22,7 +22,7 @@ func NewUserHandler(userService service.UserService) *UserHandler {
 func (h *UserHandler) FindOne(w http.ResponseWriter, r *http.Request) {
 	gitName := "TANAKA" // クエリパラメータやリクエストから取得しても良い
 
-	result, err := h.userService.FindOne(context.Background(), gitName)
+	result, err := h.userService.FindOneDocument(context.Background(), gitName)
 	if err != nil {
 		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
@@ -34,7 +34,7 @@ func (h *UserHandler) FindOne(w http.ResponseWriter, r *http.Request) {
 
 // 全件取得してJSONで返す
 func (h *UserHandler) AllSelect(w http.ResponseWriter, r *http.Request) {
-	results, err := h.userService.FindAll(context.Background())
+	results, err := h.userService.FindAllDocuments(context.Background())
 	if err != nil {
 		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
@@ -46,7 +46,7 @@ func (h *UserHandler) AllSelect(w http.ResponseWriter, r *http.Request) {
 
 // ユーザー情報を登録する
 func (h *UserHandler) RegisterUserInfo(w http.ResponseWriter, r *http.Request) {
-	var body model.User_info
+	var body model.UserInfo
 
 	err := json.NewDecoder(r.Body).Decode(&body)
 	if err != nil {

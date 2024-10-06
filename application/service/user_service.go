@@ -28,7 +28,7 @@ func (s *UserService) RegisterUser(userInfo model.UserInfo) error {
 		return err
 	}
 
-	return s.userRepository.Save(userInfo)
+	return s.userRepository.Save(&userInfo)
 }
 
 func (s *UserService) validateUser(userInfo model.UserInfo) error {
@@ -46,7 +46,7 @@ func (s *UserService) validateUser(userInfo model.UserInfo) error {
 func (s *UserService) InputUserInfoValueCheckMain(stUserInfo model.UserInfo) (int, string) {
 
 	// のチェック
-	if nRet, returnMsg := check(stUserInfo.GitName); nRet == 0 {
+	if nRet, returnMsg := checkName(stUserInfo.GitName); nRet == 0 {
 		return nRet, returnMsg
 	}
 
@@ -65,7 +65,7 @@ func (s *UserService) InputUserInfoValueCheckMain(stUserInfo model.UserInfo) (in
 	return nRet, "全ての入力が正常"
 }
 
-func check(gitName string) (int, string) {
+func checkName(gitName string) (int, string) {
 
 	// http.Getを使用してAccount文字列があるか確認
 	exists, err := external.CheckGitHubAccount(gitName)

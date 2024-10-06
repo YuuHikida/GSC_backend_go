@@ -13,16 +13,16 @@ type UserRepository struct {
 }
 
 // user情報登録(1件)
-func (r *UserRepository) Save(user model.UserInfo) error {
+func (r *UserRepository) Save(user *model.UserInfo) error {
 	_, err := r.collection.InsertOne(context.TODO(), user)
 	return err
 }
 
 // Initializeでコレクションをセットアップ
-func NewMongoUserRepository() UserRepository {
+func NewMongoUserRepository() *UserRepository { // インターフェースを返す
 	client, _ := mongo.Connect(context.TODO()) // 初期化の詳細は省略
 	db := client.Database("gitInfoContributes")
-	return UserRepository{collection: db.Collection("user_info")}
+	return &UserRepository{collection: db.Collection("user_info")} // ポインタ型を返す
 }
 
 // MongoDBから1件のドキュメントを取得して返す
