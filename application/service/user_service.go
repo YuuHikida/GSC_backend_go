@@ -1,14 +1,41 @@
 package service
 
-// user情報を登録するユースケース
+/*自分用メモ:
+ user情報を登録するユースケース
+アプリケーション層では、ユースケースの処理を担当
+バリデーションやビジネスロジックを行い、インフラ層にデータを委譲
+*/
 import (
+	"context"
+	"errors"
+
 	"github.com/YuuHikida/GSC_backend_go/domain/model"
 	"github.com/YuuHikida/GSC_backend_go/domain/repository"
 	"github.com/YuuHikida/GSC_backend_go/infrastructure/external"
+	"github.com/YuuHikida/GSC_backend_go/infrastructure/persistence"
 )
 
 type UserService struct {
 	userRepository repository.UserRepository
+}
+
+func NewUserService() UserService {
+	return UserService{userRepository: persistence.NewMongoUserRepository()}
+}
+
+func (s *UserService) RegisterUser(userInfo model.UserInfo) error {
+	if err := s.validateUser(userInfo); err != nil {
+		return err
+	}
+
+	return s.userRepository.Save(userInfo)
+}
+
+func (s *UserService) validateUser(userInfo model.UserInfo) error {
+	if userInfo.GitName == "" || userInfo.Mail == "" {
+		return errors.New("invalid user info")
+	}
+	return nil
 }
 
 /*
@@ -16,7 +43,7 @@ type UserService struct {
 		戻り値: nRet 0 = 異常, 1 = 正常
 	        　　returnMsg 成功時、及び失敗時のメッセージ
 */
-func (s *UserService) InputUserInfoValueCheckMain(stUserInfo model.User_info) (int, string) {
+func (s *UserService) InputUserInfoValueCheckMain(stUserInfo model.UserInfo) (int, string) {
 
 	// のチェック
 	if nRet, returnMsg := check(stUserInfo.GitName); nRet == 0 {
@@ -60,4 +87,12 @@ func checkMail(mail string) (int, string) {
 func checkTime(time string) (int, string) {
 	// チェック処理
 	return 1, "Time 正常"
+}
+
+func (s *UserService) FindOneDocument(ctx context.Context, gitName string) (model.UserInfo, error) {
+	return s.userRepository.FindOne(ctx, gitName)
+}
+
+func (s *UserService) FindAllDocuments(ctx context.Context) ([]model.UserInfo, error) {
+	return s.userRepository.FindAll(ctx)
 }

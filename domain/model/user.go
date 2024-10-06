@@ -7,7 +7,7 @@ package model
 	小文字:パッケージ内からアクセス
 */
 // ユーザー登録情報
-type User_info struct {
+type UserInfo struct {
 	GitName string
 	Mail    string
 	Time    string

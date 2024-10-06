@@ -12,18 +12,17 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/YuuHikida/GSC_backend_go/pkg/database"
-	"github.com/YuuHikida/GSC_backend_go/pkg/handlers"
-	"github.com/YuuHikida/GSC_backend_go/services"
+	"github.com/YuuHikida/GSC_backend_go/infrastructure/persistence/database"
+	"github.com/YuuHikida/GSC_backend_go/interfaces/api"
 )
 
 func main() {
 	fmt.Println("-- Start Program --")
 
 	// ルーターを作成
-	handler := handlers.SetRoutes()
+	handler := api.SetRoutes()
 
-	//　初期設定(DBの初期化)
+	//　DBの初期化
 	client, ctx, cancel, err := database.Initialize()
 	if err != nil {
 		log.Fatal("Database initialization failed: ", err)
@@ -40,7 +39,7 @@ func main() {
 	}()
 
 	// サービス層の初期化(DB)
-	services.Initialize(client)
+	//services.Initialize(client)
 
 	// サーバー起動
 	log.Println("Starting server on :8080")
