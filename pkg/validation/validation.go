@@ -6,7 +6,7 @@ package validation
         　　returnMsg 成功時、及び失敗時のメッセージ
 */
 func InputUserInfoValueCheckMain() (int, string) {
-	//戻り値初期化
+	// 戻り値初期化
 	var (
 		nRet      int    = 0
 		returnMsg string = ""
@@ -14,3 +14,7 @@ func InputUserInfoValueCheckMain() (int, string) {
 
 	return nRet, returnMsg
 }
+
+func checkGitName()
+func checkMail()
+func checkTime()

@@ -57,10 +57,10 @@ func RegisterUserInfo(w http.ResponseWriter, r *http.Request) {
 	nRet, returnMsg := validation.InputUserInfoValueCheckMain()
 
 	// 戻り値判定 nRet(異常:->0,正常:->1)
-	if nRet == 1 {
+	if nRet == 0 {
 		http.Error(w, "入力値エラー:"+returnMsg, http.StatusBadRequest)
 		return
 	} else {
-		return
+
 	}
 }

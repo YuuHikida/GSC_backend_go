@@ -39,7 +39,7 @@ func main() {
 		}
 	}()
 
-	// サービス層の初期化
+	// サービス層の初期化(DB)
 	services.Initialize(client)
 
 	// サーバー起動
