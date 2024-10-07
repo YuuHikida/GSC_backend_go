@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options" // MongoDBクライアントの接続オプションを扱うパッケージ。
 )
@@ -51,18 +52,17 @@ func GetURI() (string, error) {
 
 	// Docker使わずにローカルで起動するなら以下
 	// err := godotenv.Load("../../.env")
-	// err := godotenv.Load("/app/.env")
-	// if err != nil {
-	// 	// log.Fatalfはエラーメッセをフォーマットして出力し、プログラムを終了する
-	// 	log.Fatalf("Error loading .env file :(%v)", err)
-	// 	// %v：変数のデフォルトの形式で表示します。構造体など複雑なデータのデフォルト表示に使います
-	// }
+	err := godotenv.Load("/app/.env")
+	if err != nil {
+		// log.Fatalfはエラーメッセをフォーマットして出力し、プログラムを終了する
+		log.Fatalf("Error loading .env file :(%v)", err)
+		// %v：変数のデフォルトの形式で表示します。構造体など複雑なデータのデフォルト表示に使います
+	}
 
 	uri := os.Getenv("MONGODB_URI")
 	if uri == "" {
 		log.Fatalf("MONGODB_URI is not set in .env file")
 	}
-
 	return uri, nil
 }
 

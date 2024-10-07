@@ -6,13 +6,14 @@ import (
 	"github.com/YuuHikida/GSC_backend_go/application/service"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func SetRoutes() http.Handler {
+func SetRoutes(client *mongo.Client) http.Handler {
 	router := mux.NewRouter()
 
-	userService := service.NewUserService()    // UserServiceの初期化
-	userHandler := NewUserHandler(userService) // UserHandlerの初期化
+	userService := service.NewUserService(client) // UserServiceの初期化
+	userHandler := NewUserHandler(userService)    // UserHandlerの初期化
 
 	router.HandleFunc("/", userHandler.FindOne).Methods("GET")
 	router.HandleFunc("/all", userHandler.AllSelect).Methods("GET")

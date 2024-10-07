@@ -19,8 +19,7 @@ func (r *UserRepository) Save(user *model.UserInfo) error {
 }
 
 // Initializeでコレクションをセットアップ
-func NewMongoUserRepository() *UserRepository { // インターフェースを返す
-	client, _ := mongo.Connect(context.TODO()) // 初期化の詳細は省略
+func NewMongoUserRepository(client *mongo.Client) *UserRepository { // インターフェースを返す
 	db := client.Database("gitInfoContributes")
 	return &UserRepository{collection: db.Collection("user_info")} // ポインタ型を返す
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 
 	"net/http"
 
@@ -25,6 +26,7 @@ func (h *UserHandler) FindOne(w http.ResponseWriter, r *http.Request) {
 
 	result, err := h.userService.FindOneDocument(context.Background(), gitName)
 	if err != nil {
+		log.Printf("Error finding document: %v", err)
 		http.Error(w, "Database error_findOne", http.StatusInternalServerError)
 		return
 	}

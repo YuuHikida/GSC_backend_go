@@ -12,15 +12,13 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/YuuHikida/GSC_backend_go/infrastructure/persistence"
 	"github.com/YuuHikida/GSC_backend_go/infrastructure/persistence/database"
 	"github.com/YuuHikida/GSC_backend_go/interfaces/api"
 )
 
 func main() {
 	fmt.Println("-- Start Program --")
-
-	// ルーターを作成
-	handler := api.SetRoutes()
 
 	//　DBの初期化
 	client, ctx, cancel, err := database.Initialize()
@@ -39,9 +37,14 @@ func main() {
 		}
 	}()
 
-	// サービス層の初期化(DB)
-	//services.Initialize(client)
+	// ルーターを作成
+	handler := api.SetRoutes(client)
 
+	// リポジトリ初期化（必要なら後で利用する）
+	userRepo := persistence.NewMongoUserRepository(client)
+	if userRepo == nil {
+		log.Printf("リポジトリ初期化失敗")
+	}
 	// サーバー起動
 	log.Println("Starting server on :8080")
 	log.Fatal(http.ListenAndServe(":8080", handler)) // エラーハンドリングを追加

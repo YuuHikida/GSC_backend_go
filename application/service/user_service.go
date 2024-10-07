@@ -12,14 +12,15 @@ import (
 	"github.com/YuuHikida/GSC_backend_go/domain/repository"
 	"github.com/YuuHikida/GSC_backend_go/infrastructure/external"
 	"github.com/YuuHikida/GSC_backend_go/infrastructure/persistence"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type UserService struct {
 	userRepository repository.UserRepository
 }
 
-func NewUserService() UserService {
-	return UserService{userRepository: persistence.NewMongoUserRepository()}
+func NewUserService(client *mongo.Client) UserService {
+	return UserService{userRepository: persistence.NewMongoUserRepository(client)}
 }
 
 func (s *UserService) RegisterUser(userInfo model.UserInfo) (int, string) {
