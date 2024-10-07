@@ -25,7 +25,7 @@ func (h *UserHandler) FindOne(w http.ResponseWriter, r *http.Request) {
 
 	result, err := h.userService.FindOneDocument(context.Background(), gitName)
 	if err != nil {
-		http.Error(w, "Database error", http.StatusInternalServerError)
+		http.Error(w, "Database error_findOne", http.StatusInternalServerError)
 		return
 	}
 

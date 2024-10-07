@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/YuuHikida/GSC_backend_go/pkg/database" // databaseパッケージのインポート
+	"github.com/YuuHikida/GSC_backend_go/infrastructure/persistence/database" // databaseパッケージのインポート
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"

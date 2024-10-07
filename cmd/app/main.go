@@ -26,8 +26,9 @@ func main() {
 	client, ctx, cancel, err := database.Initialize()
 	if err != nil {
 		log.Fatal("Database initialization failed: ", err)
+	} else {
+		log.Printf("Succesfully connected")
 	}
-
 	// コンテキストキャンセルをサーバーが終了するタイミングで実行
 	defer cancel()
 
@@ -43,7 +44,7 @@ func main() {
 
 	// サーバー起動
 	log.Println("Starting server on :8080")
-	http.ListenAndServe(":8080", handler)
+	log.Fatal(http.ListenAndServe(":8080", handler)) // エラーハンドリングを追加
 
 	fmt.Println("-- END Program --")
 }
