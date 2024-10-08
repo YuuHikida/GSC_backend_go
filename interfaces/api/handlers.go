@@ -3,7 +3,6 @@ package api
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 
 	"net/http"
@@ -60,14 +59,14 @@ func (h *UserHandler) RegisterUserInfo(w http.ResponseWriter, r *http.Request) {
 	// バリデーションチェック及び登録
 	//戻り値は成功or失敗値とメッセ
 	nRet, returnMsg := h.userService.RegisterUser(body)
-	/*
-		if err != nil {
-			http.Error(w, "Validation or Database error", http.StatusInternalServerError)
-			return
-		}
-	*/
+
+	// HTTPレスポンスのヘッダーを設定
+	w.Header().Set("Content-Type", "text/plain") // w.Header().Set("Content-Type", "application/json") <- これはJsonを返す
+	w.Write([]byte(returnMsg))
+
 	// 一旦console.log出力
 	//いずれはメッセージを登録画面に返す
-	fmt.Printf("nRet:(%d),retunrMSG:(%s)", nRet, returnMsg)
-	w.WriteHeader(http.StatusCreated)
+	log.Printf("nRet:(%d),retunrMSG:(%s)", nRet, returnMsg)
+
+	//w.WriteHeader(http.StatusCreated)
 }
