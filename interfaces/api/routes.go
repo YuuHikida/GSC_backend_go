@@ -18,6 +18,7 @@ func SetRoutes(client *mongo.Client) http.Handler {
 	router.HandleFunc("/", userHandler.FindOne).Methods("GET")
 	router.HandleFunc("/all", userHandler.AllSelect).Methods("GET")
 	router.HandleFunc("/register", userHandler.RegisterUserInfo).Methods("POST")
+	router.HandleFunc("edit", userHandler.edit).Methods("POST")
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:3000"}, // Reactアプリのオリジンを許可
