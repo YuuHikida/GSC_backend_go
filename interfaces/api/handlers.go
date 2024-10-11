@@ -70,3 +70,8 @@ func (h *UserHandler) RegisterUserInfo(w http.ResponseWriter, r *http.Request) {
 
 	//w.WriteHeader(http.StatusCreated)
 }
+
+func (h *UserHandler) editUserInfo(w http.ResponseWriter, r *http.Request) {
+	// ここで値を編集
+
+}
