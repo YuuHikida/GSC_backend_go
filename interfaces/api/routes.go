@@ -18,7 +18,7 @@ func SetRoutes(client *mongo.Client) http.Handler {
 	router.HandleFunc("/", userHandler.FindOne).Methods("GET")
 	router.HandleFunc("/all", userHandler.AllSelect).Methods("GET")
 	router.HandleFunc("/register", userHandler.RegisterUserInfo).Methods("POST")
-	router.HandleFunc("edit", userHandler.edit).Methods("POST")
+	router.HandleFunc("edit", userHandler.editUserInfo).Methods("POST")
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:3000"}, // Reactアプリのオリジンを許可
@@ -29,3 +29,6 @@ func SetRoutes(client *mongo.Client) http.Handler {
 
 	return c.Handler(router)
 }
+
+// delete処理(着手中,いずれグーグルIDと紐づけたIDで問い合わせるようにする)
+func Edit()
